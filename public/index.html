@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Watalina Satış Sistemi v2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/app.css">
+</style>
+</head>
+<body>
+<!-- ══ LOGIN OVERLAY ══════════════════════════════════ -->
+<div id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">
+      <div style="width:36px;height:36px;background:#e85d26;border-radius:9px;display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div>
+        <div class="login-logo-text">WATALINA</div>
+        <span class="login-logo-sub">SALES HUB</span>
+      </div>
+    </div>
+    <div class="login-title">Giriş Yap</div>
+    <div class="login-sub">Devam etmek için hesabınıza giriş yapın.</div>
+    <div class="login-field">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="loginUser" placeholder="kullanici_adi" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Şifre</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn" data-action="doLogin">Giriş Yap</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<div class="app-shell">
+
+<!-- ══ MODERN HEADER ══════════════════════════════════════ -->
+<div class="mob-overlay" id="mobOverlay"></div>
+
+<header class="topbar" id="mainHeader">
+  <!-- Hamburger: sol rail / svc-left açar -->
+  <button class="mob-rail-btn" id="mobRailBtn" title="Menü">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="tb-brand">
+    <img class="tb-logo admin-trigger" src="data:image/png;base64,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" alt="Watalina" data-action="handleLogoClick">
+    <div class="tb-brand-text">
+      <span class="tb-brand-name">WATALINA</span>
+      <span class="tb-brand-sub">SALES HUB</span>
+    </div>
+  </div>
+  <div class="tb-search-wrap">
+    <svg class="tb-si" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="tb-search" id="globalSearch" type="text" placeholder="Ürün, kod, marka, müşteri, teklif...">
+    <span class="tb-search-kbd">⌘K</span>
+  </div>
+  <div class="tb-right">
+    <button class="tb-icon-btn" data-action="openRecentQuotes" title="Son Teklifler">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    </button>
+    <button class="tb-icon-btn" id="notifBtn" title="Bildirimler">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </button>
+    <div class="tb-divider"></div>
+    <div class="tb-user-badge" id="tbUserBadge" style="cursor:pointer" onclick="openChangePwModal()" title="Şifremi Değiştir">
+      <div class="tb-user-avatar" id="tbUserAvatar">?</div>
+      <div>
+        <div class="tb-user-name" id="tbUserName">—</div>
+        <div class="tb-user-role" id="tbUserRole">—</div>
+      </div>
+    </div>
+    <button class="tb-logout-btn" id="tbLogoutBtn" data-action="doLogout" title="Çıkış">⏻</button>
+    <div class="tb-divider" id="adminDivider" style="display:none"></div>
+    <button class="tb-btn tb-btn-admin" data-action="openAdmin" id="adminLoginBtn" style="display:none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+      Admin
+    </button>
+    <!-- Mobil sepet butonu -->
+    <button class="mob-cart-btn" id="mobCartBtn" title="Sepet">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    </button>
+  </div>
+</header>
+<nav id="appNav">
+  <button class="nav-pill active" data-action="switchPage" data-page="dashboard" data-role-require="admin">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Dashboard
+  </button>
+  <button class="nav-pill" data-action="switchPage" data-page="sales" data-role-require="admin,sales">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Satış &amp; Sipariş
+  </button>
+  <button class="nav-pill" data-action="switchPage" data-page="service" data-role-require="admin,service">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    Servis &amp; Bakım
+    <span class="pill-count" id="svcUrgentCount">0</span>
+  </button>
+</nav>
+
+
+
+<!-- ══ DASHBOARD PAGE ══════════════════════════════════ -->
+<div class="page-panel active" id="page-dashboard">
+<div class="dashboard-area" id="dashboardArea">
+  <!-- KPI Cards -->
+  <div class="dash-kpi-grid" id="dashKpiGrid">
+    <div class="dash-kpi-card dkc-blue">
+      <div class="dkc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="dkc-label">Toplam Teklif Tutarı</div>
+      <div class="dkc-val" id="kpiTotalQuotes">—</div>
+      <div class="dkc-sub" id="kpiTotalQuotesSub">Son 20 teklif</div>
+    </div>
+    <div class="dash-kpi-card dkc-green">
+      <div class="dkc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+      <div class="dkc-label">Toplam Sipariş</div>
+      <div class="dkc-val" id="kpiOrders">—</div>
+      <div class="dkc-sub">Kayıtlı teklifler</div>
+    </div>
+    <div class="dash-kpi-card dkc-amber">
+      <div class="dkc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="dkc-label">Aktif Müşteri</div>
+      <div class="dkc-val" id="kpiCustomers">—</div>
+      <div class="dkc-sub">Servis müşterisi</div>
+    </div>
+    <div class="dash-kpi-card dkc-red">
+      <div class="dkc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="dkc-label">Yaklaşan Bakımlar</div>
+      <div class="dkc-val" id="kpiUpcoming">—</div>
+      <div class="dkc-sub">30 gün içinde</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="dash-section-title" style="margin-bottom:12px">Hızlı İşlemler</div>
+  <div class="dash-quick-grid" style="margin-bottom:28px">
+    <button class="dash-quick-btn" data-action="switchPage" data-page="sales">
+      <div class="dqb-icon" style="background:#eff5ff;color:#005bcc"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <div><div class="dqb-text-main">Yeni Teklif Oluştur</div><div class="dqb-text-sub">Sepet açarak başla</div></div>
+    </button>
+    <button class="dash-quick-btn" data-action="switchPage" data-page="service" data-after="openAddCustomerModal">
+      <div class="dqb-icon" style="background:#f0fdf4;color:#16a34a"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+      <div><div class="dqb-text-main">Müşteri Ekle</div><div class="dqb-text-sub">Servis kaydı oluştur</div></div>
+    </button>
+    <button class="dash-quick-btn" data-action="switchPage" data-page="service" data-after="openAddServiceModal">
+      <div class="dqb-icon" style="background:#fff7ed;color:#d97706"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+      <div><div class="dqb-text-main">Servis Kaydı Aç</div><div class="dqb-text-sub">Bakım veya tamir</div></div>
+    </button>
+    <button class="dash-quick-btn" data-action="switchPage" data-page="sales" data-after="focusSearch">
+      <div class="dqb-icon" style="background:#fef2f2;color:#dc2626"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div><div class="dqb-text-main">Ürün Ara</div><div class="dqb-text-sub">Tüm katalogda ara</div></div>
+    </button>
+  </div>
+
+  <!-- Bottom panels: recent quotes + upcoming service -->
+  <div class="dash-bottom-grid">
+    <div class="dash-panel">
+      <div class="dash-panel-hdr">
+        <span class="dash-panel-title">Son Teklifler</span>
+        <button data-action="switchPage" data-page="sales" data-after="openRecentTab" style="background:none;border:none;color:var(--c-blue);font-size:.67rem;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase">Tümü →</button>
+      </div>
+      <div id="dashRecentQuotes"><div class="dash-empty">Henüz teklif oluşturulmadı.</div></div>
+    </div>
+    <div class="dash-panel">
+      <div class="dash-panel-hdr">
+        <span class="dash-panel-title">Yaklaşan Bakımlar</span>
+        <button data-action="switchPage" data-page="service" style="background:none;border:none;color:var(--c-blue);font-size:.67rem;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase">Servis →</button>
+      </div>
+      <div id="dashUpcomingService"><div class="dash-empty">Servis verisi yükleniyor...</div></div>
+    </div>
+  </div>
+
+  <!-- Orders + Top Products row -->
+  <div class="dash-bottom-grid" style="margin-top:18px">
+    <div class="dash-panel">
+      <div class="dash-panel-hdr">
+        <span class="dash-panel-title">Siparişler</span>
+        <button data-action="openOrdersModal" style="background:none;border:none;color:var(--c-blue);font-size:.67rem;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase">Tümü →</button>
+      </div>
+      <!-- Status bar -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--c-border)" id="orderStatusBar">
+        <div class="ord-status-pill" data-status="all" style="flex:1;text-align:center;padding:8px 4px;font-size:.62rem;font-weight:700;color:var(--c-ink2);cursor:pointer;border-bottom:2px solid var(--c-accent)">Tümü <span id="osCntAll">—</span></div>
+        <div class="ord-status-pill" data-status="beklemede" style="flex:1;text-align:center;padding:8px 4px;font-size:.62rem;font-weight:700;color:var(--c-amber);cursor:pointer;border-bottom:2px solid transparent">Bekliyor <span id="osCntPending">—</span></div>
+        <div class="ord-status-pill" data-status="onaylandi" style="flex:1;text-align:center;padding:8px 4px;font-size:.62rem;font-weight:700;color:var(--c-green);cursor:pointer;border-bottom:2px solid transparent">Onaylı <span id="osCntApproved">—</span></div>
+        <div class="ord-status-pill" data-status="kargoda" style="flex:1;text-align:center;padding:8px 4px;font-size:.62rem;font-weight:700;color:var(--c-teal);cursor:pointer;border-bottom:2px solid transparent">Kargoda <span id="osCntShipped">—</span></div>
+        <div class="ord-status-pill" data-status="teslim" style="flex:1;text-align:center;padding:8px 4px;font-size:.62rem;font-weight:700;color:var(--c-blue);cursor:pointer;border-bottom:2px solid transparent">Teslim <span id="osCntDelivered">—</span></div>
+      </div>
+      <div id="dashOrdersList"><div class="dash-empty">Henüz sipariş yok.</div></div>
+      <div class="dash-view-all" data-action="openOrdersModal">Tüm siparişleri yönet</div>
+    </div>
+    <div class="dash-panel">
+      <div class="dash-panel-hdr">
+        <span class="dash-panel-title">En Çok Satılan Ürünler</span>
+        <span style="font-size:.62rem;color:var(--c-ink3)">Tüm teklifler</span>
+      </div>
+      <div id="dashTopProducts"><div class="dash-empty">Yükleniyor...</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="page-panel" id="page-sales">
+<div class="workspace">
+
+<!-- ══ LEFT RAIL ════════════════════════════════════ -->
+<nav class="left-rail">
+  <div class="rail-header">
+    <div class="rail-title">Kategoriler</div>
+    <input class="rail-search" id="railSearch" type="text" placeholder="Kategori ara...">
+  </div>
+  <div class="rail-cats" id="railCats"></div>
+</nav>
+
+<!-- ══ MAIN AREA ════════════════════════════════════ -->
+<div class="main-area">
+  <div class="main-toolbar">
+    <div class="filter-chip-wrap" id="brandChips"></div>
+    <div class="tb-div"></div>
+    <select class="sort-sel" id="sortSel">
+      <option value="default">Varsayılan Sıra</option>
+      <option value="price-asc">Fiyat ↑</option>
+      <option value="price-desc">Fiyat ↓</option>
+      <option value="name-asc">A → Z</option>
+    </select>
+    <span class="result-info" id="resultInfo"></span>
+  </div>
+  <div class="product-area" id="productArea">
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</div>
+
+<!-- ══ RIGHT SIDEBAR ════════════════════════════════ -->
+<aside class="right-sidebar">
+  <div class="sidebar-tabs">
+    <button class="stab active" data-action="switchTab" data-tab="cart"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Sepet</button>
+    <button class="stab" data-action="switchTab" data-tab="settings"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ayarlar</button>
+    <button class="stab" data-action="switchTab" data-tab="recent"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Teklifler</button>
+  </div>
+
+  <!-- CART TAB -->
+  <div class="stab-panel active" id="tab-cart">
+    <!-- Saved customers bar -->
+    <div class="cust-saved-bar">
+      <span class="cust-saved-label">Müşteri</span>
+      <select class="cust-saved-select" id="savedCustSelect" data-action="loadSavedCustomer">
+        <option value="">— Kayıtlı müşteri seç —</option>
+      </select>
+      <button class="cust-save-btn" data-action="saveCurrentCustomer" title="Formdaki müşteriyi kaydet">Kaydet</button>
+    </div>
+    <!-- Customer info -->
+    <div class="cart-customer">
+      <div class="cust-grid">
+        <div class="cust-field cust-full">
+          <label>Firma Adı</label>
+          <input type="text" id="cFirma" placeholder="Müşteri Firma Adı">
+        </div>
+        <div class="cust-field">
+          <label>Yetkili Kişi</label>
+          <input type="text" id="cYetkili" placeholder="Ad Soyad">
+        </div>
+        <div class="cust-field">
+          <label>Telefon</label>
+          <input type="tel" id="cTel" placeholder="+90...">
+        </div>
+        <div class="cust-field">
+          <label>Vergi Dairesi</label>
+          <input type="text" id="cVD" placeholder="Vergi Dairesi">
+        </div>
+        <div class="cust-field">
+          <label>Vergi No</label>
+          <input type="text" id="cVN" placeholder="VKN / TC">
+        </div>
+        <div class="cust-field cust-full">
+          <label>E-posta</label>
+          <input type="email" id="cEmail" placeholder="mail@firma.com">
+        </div>
+        <!-- Ödeme Yöntemi -->
+        <div class="cust-field cust-full" style="margin-top:6px">
+          <label style="font-weight:700;color:var(--c-text)">Ödeme Yöntemi</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:.78rem;font-weight:600;padding:6px 12px;border:1.5px solid var(--c-border);border-radius:8px;transition:all .15s" id="pmLabel_kredi_karti">
+              <input type="radio" name="paymentMethod" value="kredi_karti" id="pm_kredi_karti" onchange="togglePaymentFields()" style="accent-color:var(--c-accent)"> 💳 Kredi Kartı
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:.78rem;font-weight:600;padding:6px 12px;border:1.5px solid var(--c-border);border-radius:8px;transition:all .15s" id="pmLabel_nakit">
+              <input type="radio" name="paymentMethod" value="nakit" id="pm_nakit" onchange="togglePaymentFields()" style="accent-color:var(--c-accent)"> 💵 Nakit
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:.78rem;font-weight:600;padding:6px 12px;border:1.5px solid var(--c-border);border-radius:8px;transition:all .15s" id="pmLabel_iban">
+              <input type="radio" name="paymentMethod" value="iban" id="pm_iban" onchange="togglePaymentFields()" style="accent-color:var(--c-accent)"> 🏦 IBAN Transferi
+            </label>
+          </div>
+        </div>
+        <!-- Kredi kartı alanı -->
+        <div class="cust-field cust-full" id="pmField_kredi_karti" style="display:none">
+          <label>Kartın Çekildiği Banka / POS</label>
+          <input type="text" id="pmKKBanka" placeholder="örn. Garanti BBVA POS, YKB POS...">
+        </div>
+        <!-- IBAN alanları -->
+        <div class="cust-field cust-full" id="pmField_iban" style="display:none">
+          <label>Hedef IBAN</label>
+          <input type="text" id="pmIBANNo" placeholder="TR00 0000 0000 0000 0000 0000 00" style="font-family:monospace;letter-spacing:.05em">
+        </div>
+        <div class="cust-field" id="pmField_iban2" style="display:none">
+          <label>Banka</label>
+          <input type="text" id="pmIBANBanka" placeholder="örn. Ziraat Bankası">
+        </div>
+        <div class="cust-field" id="pmField_iban3" style="display:none">
+          <label>Hesap Sahibi</label>
+          <input type="text" id="pmIBANHesap" placeholder="örn. Watalina Su Arıtma Ltd. Şti.">
+        </div>
+      </div>
+    </div>
+    <!-- Items -->
+    <div class="cart-items-wrap" id="cartItems">
+      <div class="cart-empty">
+        <div class="cart-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+        Sepet boş. Ürün ekleyin.
+      </div>
+    </div>
+    <!-- Summary -->
+    <div class="cart-summary">
+      <div class="sum-row"><span class="sum-label">Ara Toplam</span><span class="sum-val" id="sSubtotal">$0.00</span></div>
+      <div class="sum-row" id="sDiscRow" style="display:none"><span class="sum-label sum-disc">İskonto (<span id="sDiscPct">0</span>%)</span><span class="sum-val sum-disc" id="sDiscAmt">−$0.00</span></div>
+      <div class="sum-row" id="sAfterRow" style="display:none"><span class="sum-label">İskontolu</span><span class="sum-val" id="sAfter">$0.00</span></div>
+      <div class="sum-row"><span class="sum-label sum-tax">KDV %20</span><span class="sum-val sum-tax" id="sTax">$0.00</span></div>
+      <div class="sum-row sum-total-row">
+        <span class="sum-total-label">TOPLAM</span>
+        <div style="text-align:right">
+          <div class="sum-total-val" id="sTotal">$0.00</div>
+          <div class="sum-tl" id="sTotalTL" style="display:none"></div>
+        </div>
+      </div>
+      <div class="cart-actions">
+        <button class="cart-clear-btn" data-action="clearCart"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+        <button class="pdf-btn" data-action="generatePDF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> PDF Teklif</button>
+        <button class="pdf-btn" data-action="openNewOrderModal" style="background:var(--c-green);flex:0 0 auto"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Sipariş</button>
+        <button class="wa-btn" id="waBtn" data-action="sendWhatsApp" title="WhatsApp'ta Gönder">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div class="stab-panel" id="tab-settings">
+    <div class="qset-panel">
+      <!-- Discount -->
+      <div class="qs-section">
+        <div class="qs-title"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> Bayi İskontosu</div>
+        <div class="qs-row">
+          <span class="qs-label">İskonto Oranı</span>
+          <input class="qs-input" id="discInput" type="number" min="0" max="100" placeholder="0">
+          <span class="qs-sym">%</span>
+          <button class="qs-apply-btn" data-action="applyDiscount">Uygula</button>
+        </div>
+        <div class="active-pill hidden" id="discPill">✓ <span id="discPillTxt"></span>% iskonto aktif</div>
+      </div>
+      <!-- Rate -->
+      <div class="qs-section">
+        <div class="qs-title"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Döviz Kuru</div>
+        <div class="qs-row">
+          <span class="qs-label">1 USD =</span>
+          <input class="qs-input" id="rateInput" type="number" min="0" placeholder="₺ kur" style="width:72px">
+          <span class="qs-sym">₺</span>
+          <button class="qs-apply-btn teal" data-action="applyRate">Uygula</button>
+        </div>
+        <div class="qs-row" id="curToggleRow" style="display:none">
+          <span class="qs-label" id="rateActiveLbl"></span>
+          <div class="cur-toggle" style="margin-left:auto">
+            <button class="cur-opt active" id="btnUSD" data-action="setCurrency" data-currency="USD">USD</button>
+            <button class="cur-opt" id="btnTL" data-action="setCurrency" data-currency="TL">TL</button>
+          </div>
+        </div>
+      </div>
+      <!-- KDV note -->
+      <div class="qs-section">
+        <div class="qs-title"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> KDV Ayarı</div>
+        <div class="qs-row">
+          <span class="qs-label">KDV Oranı</span>
+          <input class="qs-input" id="kdvInput" type="number" value="20" min="0" max="100">
+          <span class="qs-sym">%</span>
+          <button class="qs-apply-btn" data-action="applyKdv">Uygula</button>
+        </div>
+        <div class="active-pill" id="kdvPill" style="display:inline-flex">KDV: %<span id="kdvPillVal">20</span></div>
+      </div>
+      <!-- Excel import -->
+      <div class="qs-section">
+        <div class="qs-title"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Excel İçe Aktar</div>
+        <div class="excel-drop" id="excelDrop" data-action="triggerExcelFile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:4px;opacity:.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><br>
+          Excel dosyası sürükle veya tıkla<br>
+          <span style="font-size:.65rem;opacity:.7">Kolonlar: Kod, Ad, Marka, Kategori, Fiyat, Stok</span>
+        </div>
+        <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" style="display:none">
+        <button class="qs-apply-btn" style="width:100%;padding:8px;margin-top:0" data-action="exportExcel"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Excel Dışa Aktar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT TAB -->
+  <div class="stab-panel" id="tab-recent">
+    <div class="recent-wrap" id="recentWrap">
+      <div class="rq-empty">Henüz teklif oluşturulmadı.</div>
+    </div>
+  </div>
+
+</aside>
+</div><!-- workspace -->
+</div><!-- page-sales -->
+
+<!-- ══ SERVICE PAGE ════════════════════════════════════ -->
+<div class="page-panel" id="page-service">
+<div id="servicePage">
+<div class="svc-layout">
+  <!-- Left customer panel -->
+  <div class="svc-left">
+    <div class="svc-panel-header">
+      <span class="svc-panel-title">Musteriler</span>
+      <button class="svc-add-btn" data-action="openAddCustomerModal">+ Musteri</button>
+    </div>
+    <div style="padding:7px 10px;border-bottom:1px solid var(--c-border)">
+      <input type="text" id="svcSearchInput" style="width:100%;background:var(--c-surf2);border:1px solid var(--c-border);border-radius:4px;padding:5px 9px;font-size:.74rem;outline:none" placeholder="Musteri ara...">
+    </div>
+    <div class="svc-cust-item active" id="svcDashboardBtn" data-action="showSvcDashboard">
+      <div class="sci-name">Genel Bakis</div>
+      <div class="sci-device">Tum musteriler ve yaklasan isler</div>
+    </div>
+    <div class="svc-customer-list" id="svcCustomerList"></div>
+  </div>
+  <!-- Main content -->
+  <div class="svc-main" id="svcMain">
+    <!-- Dashboard -->
+    <div id="svcDashView">
+      <div class="svc-kpi-row" id="svcKpiRow"></div>
+      <div class="ai-box" id="aiSuggestions"></div>
+      <div class="svc-section-title">
+        <span>Bugunun Rotasi</span>
+        <span id="routeDate" style="font-size:.67rem;color:var(--c-ink3);text-transform:none;font-weight:500;letter-spacing:0"></span>
+      </div>
+      <div class="route-card" id="dailyRoute"></div>
+      <div class="svc-section-title">
+        <span>Yaklasan Bakimlar</span>
+        <button data-action="openAddServiceModal" data-custid="" style="background:none;border:1px solid var(--c-border);border-radius:4px;padding:4px 10px;font-size:.62rem;font-weight:700;letter-spacing:.06em;cursor:pointer;color:var(--c-ink2);text-transform:uppercase">+ Is Ekle</button>
+      </div>
+      <div class="upcoming-list" id="upcomingList"></div>
+    </div>
+    <!-- Customer detail -->
+    <div id="svcCustView" style="display:none">
+      <div class="cust-detail-header" id="custDetailHeader"></div>
+      <div class="svc-section-title">
+        <span>Servis Gecmisi</span>
+        <button data-action="openAddServiceModalActive" style="background:#1a1a1a;color:white;border:none;border-radius:4px;padding:5px 12px;font-size:.62rem;font-weight:700;letter-spacing:.06em;cursor:pointer;text-transform:uppercase">+ Kayit Ekle</button>
+      </div>
+      <div class="svc-timeline" id="svcTimeline"></div>
+      <div class="svc-section-title" style="margin-top:20px"><span>Oneriler</span></div>
+      <div class="ai-box" id="custAiSuggestions"></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- app-shell -->
+
+<!-- Add Customer Modal -->
+<div class="svc-modal" id="addCustomerModal">
+<div class="svc-modal-box">
+  <div class="svc-modal-hdr">
+    <span>Yeni Müşteri</span>
+    <button class="svc-modal-close" data-action="closeAddCustomerModal">X</button>
+  </div>
+  <div class="svc-modal-body">
+    <div class="svc-form-grid">
+      <div class="svc-field svc-form-full"><label>Firma / Musteri Adi</label><input id="newCustName" placeholder="Ad veya firma"></div>
+      <div class="svc-field"><label>Telefon</label><input id="newCustPhone" type="tel" placeholder="+90..."></div>
+      <div class="svc-field"><label>Sehir / Ilce</label><input id="newCustCity" placeholder="Izmir, Bornova..."></div>
+      <div class="svc-field svc-form-full"><label>Adres</label><input id="newCustAddr" placeholder="Tam adres"></div>
+      <div class="svc-field"><label>Cihaz Modeli</label><input id="newCustDevice" placeholder="Aliwa Pompali, Flora..."></div>
+      <div class="svc-field"><label>Kurulum Tarihi</label><input id="newCustInstall" type="date"></div>
+      <div class="svc-field svc-form-full"><label>Not</label><textarea id="newCustNote" placeholder="Cihaz notu..."></textarea></div>
+    </div>
+  </div>
+  <div class="svc-modal-footer">
+    <button class="svc-cancel-btn" data-action="closeAddCustomerModal">Iptal</button>
+    <button class="svc-submit-btn" data-action="saveNewCustomer">Kaydet</button>
+  </div>
+</div>
+</div>
+
+<!-- Add Service Modal -->
+<div class="svc-modal" id="addServiceModal">
+<div class="svc-modal-box">
+  <div class="svc-modal-hdr">
+    <span class="svc-modal-title">Servis Kaydi</span>
+    <button class="svc-modal-close" data-action="closeAddServiceModal">X</button>
+  </div>
+  <div class="svc-modal-body">
+    <div class="svc-form-grid">
+      <div class="svc-field"><label>Musteri</label><select id="svcCustSelect"></select></div>
+      <div class="svc-field"><label>Islem Turu</label>
+        <select id="svcType">
+          <option value="maintenance">Periyodik Bakim</option>
+          <option value="filter">Filtre Degisimi</option>
+          <option value="install">Kurulum / Montaj</option>
+          <option value="repair">Ariza / Tamir</option>
+          <option value="visit">Kontrol Ziyareti</option>
+        </select>
+      </div>
+      <div class="svc-field"><label>Tarih</label><input id="svcDate" type="date"></div>
+      <div class="svc-field"><label>Sonraki Bakim</label><input id="svcNextDate" type="date"></div>
+      <div class="svc-field"><label>Teknisyen</label><input id="svcTech" placeholder="Ad Soyad"></div>
+      <div class="svc-field"><label>Ucret ($)</label><input id="svcFee" type="number" placeholder="0" min="0" step="0.01"></div>
+      <div class="svc-field svc-form-full"><label>Notlar</label><textarea id="svcNote" placeholder="Degistirilen parcalar, yapilan islemler..."></textarea></div>
+    </div>
+  </div>
+  <div class="svc-modal-footer">
+    <button class="svc-cancel-btn" data-action="closeAddServiceModal">Iptal</button>
+    <button class="svc-submit-btn" data-action="saveServiceRecord">Kaydet</button>
+  </div>
+</div>
+</div>
+
+<!-- ══ ORDERS MODAL ═══════════════════════════════════ -->
+<div class="svc-modal" id="ordersModal" style="display:none;z-index:600">
+  <div class="svc-modal-box" style="max-width:860px;width:95vw;max-height:88vh;display:flex;flex-direction:column">
+    <div class="svc-modal-hdr">
+      <span>Sipariş Yönetimi</span>
+      <button class="svc-modal-close" data-action="closeOrdersModal">✕</button>
+    </div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--c-border);display:flex;gap:8px;align-items:center;flex-shrink:0">
+      <input type="text" id="orderSearchInp" placeholder="Sipariş no, firma ara..." style="flex:1;background:var(--c-surf2);border:1px solid var(--c-border);border-radius:6px;padding:6px 10px;font-size:.76rem;outline:none">
+      <select id="orderStatusFilter" style="background:var(--c-surf2);border:1px solid var(--c-border);border-radius:6px;padding:6px 10px;font-size:.76rem;outline:none">
+        <option value="">Tüm Durumlar</option>
+        <option value="beklemede">Beklemede</option>
+        <option value="onaylandi">Onaylandı</option>
+        <option value="kargoda">Kargoda</option>
+        <option value="teslim">Teslim</option>
+        <option value="iptal">İptal</option>
+      </select>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:12px 16px" id="ordersListWrap">
+      <div class="dash-empty">Yükleniyor...</div>
+    </div>
+    <div style="padding:10px 16px;border-top:1px solid var(--c-border);flex-shrink:0;font-size:.72rem;color:var(--c-ink3)" id="ordersModalFooter"></div>
+  </div>
+</div>
+
+<!-- ══ NEW ORDER MODAL ════════════════════════════════ -->
+<div class="svc-modal" id="newOrderModal" style="display:none;z-index:700">
+  <div class="svc-modal-box" style="max-width:480px">
+    <div class="svc-modal-hdr">
+      <span id="newOrderModalTitle">Siparişe Çevir</span>
+      <button class="svc-modal-close" data-action="closeNewOrderModal">✕</button>
+    </div>
+    <div class="svc-modal-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Sipariş No</label>
+          <input class="svc-inp" id="noInp" placeholder="SIP-001" readonly style="background:var(--c-surf2)"></div>
+        <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Teklif No</label>
+          <input class="svc-inp" id="quoteNoInp" placeholder="TEK-001" readonly style="background:var(--c-surf2)"></div>
+      </div>
+      <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Firma</label>
+        <input class="svc-inp" id="ordFirmaInp" placeholder="Müşteri Firma Adı"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Yetkili</label>
+          <input class="svc-inp" id="ordContactInp" placeholder="Ad Soyad"></div>
+        <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Telefon</label>
+          <input class="svc-inp" id="ordPhoneInp" placeholder="+90..."></div>
+      </div>
+      <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">E-posta</label>
+        <input class="svc-inp" id="ordEmailInp" placeholder="mail@firma.com" type="email"></div>
+      <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Durum</label>
+        <select class="svc-inp" id="ordStatusInp">
+          <option value="beklemede">Beklemede</option>
+          <option value="onaylandi">Onaylandı</option>
+          <option value="kargoda">Kargoda</option>
+          <option value="teslim">Teslim Edildi</option>
+          <option value="iptal">İptal</option>
+        </select></div>
+      <div><label style="font-size:.59rem;font-weight:700;color:var(--c-ink3);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px">Notlar</label>
+        <textarea class="svc-inp" id="ordNotesInp" rows="2" placeholder="Sipariş notu..." style="resize:vertical"></textarea></div>
+      <div id="ordItemsSummary" style="background:var(--c-surf2);border:1px solid var(--c-border);border-radius:6px;padding:8px 10px;font-size:.72rem;color:var(--c-ink2);max-height:120px;overflow-y:auto"></div>
+    </div>
+    <div class="svc-modal-footer">
+      <button class="svc-cancel-btn" data-action="closeNewOrderModal">İptal</button>
+      <button class="svc-submit-btn" data-action="saveNewOrder">Siparişi Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LIGHTBOX ══════════════════════════════════════ -->
+<div class="lb-overlay" id="lbOverlay" data-action="closeLbOverlay">
+  <div class="lb-box">
+    <button class="lb-close" data-action="closeLb">✕</button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-title" id="lbTitle"></div>
+    <div class="lb-code" id="lbCode"></div>
+  </div>
+</div>
+
+<!-- ══ ADMIN LOGIN kaldırıldı (Görev 1) ════════════════════════════════════ -->
+
+<!-- ══ ŞİFRE DEĞİŞTİR MODAL (Görev 2) ═══════════════════════════════════ -->
+<div class="svc-modal" id="changePwModal">
+  <div class="svc-modal-box" style="max-width:340px">
+    <div class="svc-modal-hdr"><span>Şifremi Değiştir</span><button class="svc-modal-close" onclick="closeChangePwModal()">✕</button></div>
+    <div class="svc-modal-body" style="padding:16px;display:flex;flex-direction:column;gap:10px">
+      <input class="svc-inp" id="cpwCurrent" type="password" placeholder="Mevcut Şifre">
+      <input class="svc-inp" id="cpwNew" type="password" placeholder="Yeni Şifre">
+      <input class="svc-inp" id="cpwRepeat" type="password" placeholder="Yeni Şifre (Tekrar)">
+    </div>
+    <div class="svc-modal-ftr"><button class="svc-submit-btn" onclick="saveChangePw()">Kaydet</button></div>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL ════════════════════════════════════ -->
+<div id="adminOverlay">
+  <div id="adminPanel">
+    <div class="adm-hdr">
+      <div class="adm-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Admin Paneli <span class="adm-badge">YÖNETİM</span></div>
+      <button class="adm-close" data-action="closeAdmin">✕</button>
+    </div>
+    <!-- Admin sekmeleri -->
+    <div style="display:flex;border-bottom:1px solid var(--c-border);background:var(--c-surf2);flex-shrink:0">
+      <button class="adm-tab-btn active" id="admTabProducts" data-admtab="products" style="padding:10px 20px;font-size:.72rem;font-weight:700;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:var(--c-ink3);letter-spacing:.05em;transition:all .15s;display:flex;align-items:center;gap:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Ürünler</button>
+      <button class="adm-tab-btn" id="admTabUsers" data-admtab="users" style="padding:10px 20px;font-size:.72rem;font-weight:700;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:var(--c-ink3);letter-spacing:.05em;transition:all .15s;display:flex;align-items:center;gap:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Kullanıcılar</button>
+    </div>
+
+    <!-- ÜRÜNLER PANELİ -->
+    <div id="admPanelProducts">
+      <div class="adm-toolbar">
+        <input class="adm-search" id="admSearch" type="text" placeholder="Kod veya ad ara...">
+        <select class="adm-cat-sel" id="admCatSel"><option value="">Tüm Kategoriler</option></select>
+        <button class="adm-btn adm-btn-primary" data-action="showNewProductForm"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" style="display:inline;vertical-align:middle"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Yeni Ürün</button>
+        <button class="adm-btn adm-btn-success" data-action="saveAdmChanges"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle"><polyline points="20 6 9 17 4 12"/></svg> Kaydet</button>
+        <button class="adm-btn adm-btn-primary" style="background:#0891b2" data-action="exportExcel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Excel Export</button>
+        <button class="adm-btn adm-btn-neutral" data-action="triggerExcelFile"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Excel Import</button>
+        <button class="adm-btn adm-btn-danger" data-action="resetAllOv"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Sıfırla</button>
+        <button class="adm-btn adm-btn-neutral" data-action="closeAdmin">✕ Kapat</button>
+      </div>
+      <div class="adm-new-product-form" id="admNewForm">
+        <div class="anp-grid">
+          <div class="anp-field"><label>Ürün Kodu</label><input id="nCode" placeholder="XX-001"></div>
+          <div class="anp-field"><label>Ürün Adı</label><input id="nName" placeholder="Ürün adı"></div>
+          <div class="anp-field"><label>Fiyat ($)</label><input id="nPrice" type="number" placeholder="0.00"></div>
+          <div class="anp-field"><label>Marka</label><input id="nBrand" placeholder="Watalina"></div>
+          <div class="anp-field anp-full"><label>Kategori</label><select id="nCat"></select></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="adm-btn adm-btn-success" data-action="addNewProduct">✓ Ürün Ekle</button>
+          <button class="adm-btn adm-btn-neutral" data-action="hideNewProductForm">İptal</button>
+        </div>
+      </div>
+      <div class="adm-stats" id="admStats"></div>
+      <div class="adm-table-wrap">
+        <table class="adm-table">
+          <thead><tr>
+            <th style="width:22px"></th>
+            <th style="width:58px">Görsel</th>
+            <th style="width:88px">Kod</th>
+            <th>Ürün Adı</th>
+            <th style="width:88px">Fiyat</th>
+            <th style="width:150px">İşlem</th>
+            <th style="width:70px">Override</th>
+          </tr></thead>
+          <tbody id="admTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- KULLANICILAR PANELİ -->
+    <div id="admPanelUsers" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="adm-toolbar">
+        <button class="adm-btn adm-btn-primary" id="admAddUserBtn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" style="display:inline;vertical-align:middle"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Yeni Kullanıcı</button>
+        <button class="adm-btn adm-btn-neutral" data-action="closeAdmin">✕ Kapat</button>
+      </div>
+      <!-- Yeni kullanıcı formu -->
+      <div id="admUserForm" style="display:none;padding:14px 16px;background:#f8fafc;border-bottom:1px solid var(--c-border)">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end">
+          <div class="anp-field"><label>Kullanıcı Adı</label><input id="uUsername" placeholder="ali.kaya" autocomplete="off"></div>
+          <div class="anp-field"><label>Görünen Ad</label><input id="uDisplayName" placeholder="Ali Kaya"></div>
+          <div class="anp-field"><label>Şifre</label><input id="uPassword" type="password" placeholder="min. 6 karakter" autocomplete="new-password"></div>
+          <div class="anp-field"><label>Rol</label>
+            <select id="uRole">
+              <option value="sales">Satış (sales)</option>
+              <option value="service">Servis (service)</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="adm-btn adm-btn-success" id="admSaveUserBtn">✓ Kaydet</button>
+            <button class="adm-btn adm-btn-neutral" id="admCancelUserBtn">İptal</button>
+          </div>
+        </div>
+        <div id="admUserFormErr" style="color:var(--c-red);font-size:.72rem;margin-top:6px;display:none"></div>
+      </div>
+      <!-- Kullanıcı listesi -->
+      <div style="overflow-x:auto;flex:1;overflow-y:auto">
+        <table class="adm-table" style="width:100%">
+          <thead><tr>
+            <th>Kullanıcı Adı</th>
+            <th>Görünen Ad</th>
+            <th>Rol</th>
+            <th>Kayıt Tarihi</th>
+            <th style="width:220px">İşlemler</th>
+          </tr></thead>
+          <tbody id="admUsersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="adm-footer">
+      <span id="admFooterInfo"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:3px;opacity:.6"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Logo üzerine 5 kez tık veya Ctrl+Shift+A</span>
+      <button class="adm-btn adm-btn-neutral" data-action="admLogout"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Çıkış</button>
+    </div>
+  </div>
+</div>
+<input type="file" id="adminImgPicker" accept="image/*" style="display:none">
+<div id="toast"></div>
+
+<script src="/js/data.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/state.js"></script>
+<script src="/js/catalog.js"></script>
+<script src="/js/router.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/pdf.js"></script>
+<script src="/js/orders.js"></script>
+<script src="/js/service.js"></script>
+<script src="/js/admin.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
